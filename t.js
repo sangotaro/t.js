@@ -16,7 +16,7 @@
 	@version 0.1.0
 
 */
-(function() {
+(function(global) {
 
 	var blockregex = /\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g,
 		valregex = /\{\{([=%])(.+?)\}\}/g;
@@ -98,6 +98,11 @@
 		return render(this.t, vars);
 	};
 
-	window.t = t;
-
-})();
+	if (typeof define === 'function' && define.amd) {
+		define(function() { return t; });
+	} else if (typeof exports === 'object') {
+		module.exports = t;
+	} else {
+		global.t = t;
+	}
+})(this);
